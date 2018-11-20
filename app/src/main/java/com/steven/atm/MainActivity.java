@@ -1,7 +1,6 @@
 package com.steven.atm;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -17,14 +16,26 @@ public class MainActivity extends AppCompatActivity {
             //startActivity(intent);
             startActivityForResult(intent,RC_LOGIN);
         }
-
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_LOGIN){
-            if(resultCode != RESULT_OK){
+            if(resultCode != RESULT_OK ){
                 finish();
+            }else{
+                //TODO: if nickname / age /gender exist
+                String saveNickname = getSharedPreferences("user",MODE_PRIVATE)
+                        .getString("USERNICKNAME", null);
+                int saveAge = getSharedPreferences("user",MODE_PRIVATE)
+                        .getInt("USERAGE", 0);
+                int saveGender = getSharedPreferences("user",MODE_PRIVATE)
+                        .getInt("USERGENDER", 0);
+
+                if (saveNickname == null || saveAge == 0 || saveGender == 0) {
+                    Intent nickname = new Intent(this,NicknameActivity.class);
+                    startActivity(nickname);
+                }
             }
         }
     }
