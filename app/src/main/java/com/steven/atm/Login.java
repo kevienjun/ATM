@@ -27,7 +27,7 @@ public class Login extends AppCompatActivity {
     public void Login(View view){
         username = ed_username.getText().toString();
         password = ed_password.getText().toString();
-        if("Steven".equals(username) && "123456789".equals(password)){
+        if("Ken".equals(username) && "00000000".equals(password)){
             //存取資料
             getSharedPreferences("atm",MODE_PRIVATE)
                     .edit()
