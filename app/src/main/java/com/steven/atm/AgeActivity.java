@@ -1,51 +1,163 @@
 package com.steven.atm;
 
+
+
 import android.content.Intent;
+
+import android.graphics.Color;
+
+import android.support.annotation.NonNull;
+
 import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import android.support.v7.widget.LinearLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+
 import android.view.View;
+
+import android.view.ViewGroup;
+
 import android.widget.EditText;
+
 import android.widget.TextView;
 
-public class AgeActivity extends AppCompatActivity {
+
+
+public class AgeActivity extends BaseActivity {
+
+
 
     private EditText edAge;
+
     private int age;
-    int [] ageChoose = {1,2,3,4,5,6,7,8,9};
+
+    int[] ageChoose = {19,20,21,22,23,24,25};
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_age);
-        RecyclerView ageRecycler = findViewById(R.id.recycler);
+
+        RecyclerView ageRecycler =findViewById(R.id.recycler);
+
         ageRecycler.setHasFixedSize(true);
+
         ageRecycler.setLayoutManager(new LinearLayoutManager(this));
-    }
-    public void next(View view){
+
+        ageRecycler.setAdapter(new ageAdapter());
+
         edAge = findViewById(R.id.ed_age);
-        age = Integer.parseInt(edAge.getText().toString());
-        getSharedPreferences("user",MODE_PRIVATE)
-                .edit()
-                .putInt("USERAGE", age)
-                .apply();
-        Intent gender = new Intent(this,GenderActivity.class);
-        startActivity(gender);
     }
+
+    public void next(View view){
+
+
+        age = Integer.parseInt(edAge.getText().toString());
+
+//        getSharedPreferences("user",MODE_PRIVATE)
+
+//                .edit()
+
+//                .putInt("USERAGE", age)
+
+//                .apply();
+
+        user.setAge(age);
+
+        Intent gender = new Intent(this,GenderActivity.class);
+
+        startActivity(gender);
+
+    }
+
+
 
     public void back(View view){
+
         finish();
+
     }
 
-    class ageAdapter {
-        class ageViewAdapter extends RecyclerView.ViewHolder{
-            TextView ageText;
-            public ageViewAdapter(View itemView) {
-                super(itemView);
-                ageText = itemView.findViewById(R.id.textv_age);
+
+
+    class ageAdapter extends RecyclerView.Adapter<ageAdapter.ageViewHolder>{
+
+        @NonNull
+
+        @Override
+
+        //把設計圖變成可用的view(XML→View)
+
+        public ageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+            View view = getLayoutInflater().inflate(R.layout.age_row,parent,false);
+
+            return new ageViewHolder(view);
+
+        }
+
+
+
+        @Override
+
+        public void onBindViewHolder(@NonNull ageViewHolder holder, final int position) {
+
+            holder.ageText.setText(ageChoose[position]+"");
+
+            if(ageChoose[position] == 19){
+
+                holder.ageText.setTextColor(Color.RED);
+
             }
-        }
-    }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("Ageactivity","onClick" + ageChoose[position]);
+                    edAge.setText(ageChoose[position]);
+                }
+            });
+
         }
 
+
+
+        @Override
+
+        //有幾個?
+
+        public int getItemCount() {
+
+            return ageChoose.length;
+
+        }
+
+
+
+        class ageViewHolder extends RecyclerView.ViewHolder{
+
+            //讀取XML
+
+            TextView ageText;
+
+            public ageViewHolder(View itemView) {
+
+                super(itemView);
+
+                ageText = itemView.findViewById(R.id.ageText);
+
+            }
+
+        }
+
+    }
+
+}}
